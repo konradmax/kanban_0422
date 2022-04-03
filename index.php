@@ -5,6 +5,7 @@ session_start();
 # Sesja musi wystartowac
 //if ($_SESSION['zalogowany'] == 1):
     require_once("lib/tasks.php");
+    require_once("lib/Task.php");
 //endif;
 
 

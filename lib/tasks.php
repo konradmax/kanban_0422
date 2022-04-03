@@ -13,7 +13,13 @@ function getTasksByUserAndStatus($user_id,$status) {
 
     $result = $sth->fetchAll();
 
-    return $result;
+    $output = [];
+
+    foreach($result as $item) {
+        $output[] = new Task($item);
+    }
+
+    return $output;
 }
 
 function getTasksByUserAndStatusWithComments($user_id,$status)
@@ -23,9 +29,16 @@ function getTasksByUserAndStatusWithComments($user_id,$status)
     if(count($listaZadan)>0) {
         foreach($listaZadan as $index=>$pojedynczeZadanie) {
 
-            $listaZadan[$index]['komentarze'] = getCommentsByTaskId($pojedynczeZadanie['id']);
+            $kommentarze = getCommentsByTaskId($pojedynczeZadanie->id);
+
+            $listaZadan[$index] = $pojedynczeZadanie->attachComments($kommentarze);
+
+
+//            $listaZadan[$index]['komentarze'] = getCommentsByTaskId($pojedynczeZadanie['id']);
         }
     }
+
+
 
     return $listaZadan;
 }
