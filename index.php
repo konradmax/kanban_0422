@@ -10,6 +10,7 @@ session_start();
 
 
 
+
 $post = $_POST;
 $header = "lubiemaslo";
 $formName = "login";
@@ -30,18 +31,17 @@ if(isset($_POST)
     $pdo = new PDO('mysql:host=localhost;dbname=test', 'root');
 
     // prepare sql statement
-//   $sql = 'SELECT * FROM user WHERE username="'.$username1.'" AND password="'.$password.'" LIMIT 1 ';
     $sql = sprintf('SELECT * FROM users WHERE username="%s" AND password="%s" LIMIT 1 ',
        $username1,
        $password
    );
 
+    $currentUserData = $pdo->query($sql)->fetch();
    // check if there are any rows
-   $count = $pdo->query($sql)->rowCount();
-    if($count) {
+    if(count($currentUserData)) {
     // username and password are OK. Carry on.
 
-        $_SESSION['uzyszkodnik'] = $username1;
+        $_SESSION['user_id'] = $currentUserData['id'];
         $_SESSION['zalogowany'] = 1;
 
     } else {
@@ -53,8 +53,12 @@ if(isset($_POST)
 
 #ZMIEN HASLO
 if($_SESSION['zalogowany']==1) {
-    // zalogowany5
-    $listaZadan = getTasksByUserAndStatus($_SESSION['uzyszkodnik'],1);
+
+    // zalogowany
+    $listaZadan = getTasksByUserAndStatusWithComments($_SESSION['user_id'],1);
+
+
+
     $header = "Zmien haslo";
 
     $formName = "change_password";

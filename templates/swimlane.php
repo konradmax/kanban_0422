@@ -9,21 +9,19 @@
                     <div class="items border border-light">
 
                         <?php
-                        $taskTodo = getTasksByUserAndStatus($_SESSION['uzyszkodnik'],1);
-foreach($taskTodo as $zadanieTodo):
+                        $taskTodo = getTasksByUserAndStatusWithComments($_SESSION['user_id'],1);
 
-include("templates/swimlane-item.php");
+                        foreach($taskTodo as $zadanieTodo):
+                        include("templates/swimlane-item.php");
 
 ?>
 
                         <?php
-endforeach;
+                        endforeach;
 
-                        if(count(getTasksByUserAndStatus($_SESSION['uzyszkodnik'],1))):?>
+                        if(count(getTasksByUserAndStatus($_SESSION['user_id'],1))):
+                            ?>
 
-<!--                            --><?php
-//                        var_dump(count(getTasksByUserAndStatus($_SESSION['uzyszkodnik'],1)));
-//                            ?>
 
                         <?php endif;?>
                         <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
@@ -39,7 +37,7 @@ endforeach;
                     <div class="items border border-light">
 
                                               <?php
-                        $taskTodo = getTasksByUserAndStatus($_SESSION['uzyszkodnik'],2);
+                        $taskTodo = getTasksByUserAndStatus($_SESSION['user_id'],2);
 foreach($taskTodo as $zadanieTodo):
 
 include("templates/swimlane-item.php");
@@ -63,7 +61,7 @@ endforeach;
 
 
                         <?php
-                        $taskTodo = getTasksByUserAndStatus($_SESSION['uzyszkodnik'],3);
+                        $taskTodo = getTasksByUserAndStatus($_SESSION['user_id'],3);
                         foreach($taskTodo as $zadanieTodo):
 
                             include("templates/swimlane-item.php");
@@ -88,8 +86,8 @@ endforeach;
 
 
                         <?php
-                        $taskTodo = getTasksByUserAndStatus($_SESSION['uzyszkodnik'],4);
-                        foreach($taskTodo as $zadanieTodo):
+                        $taskTodo = getTasksByUserAndStatus($_SESSION['user_id'],4);
+                        foreach($taskTodo as $index=>$zadanieTodo):
 
                             include("templates/swimlane-item.php");
 

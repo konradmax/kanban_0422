@@ -7,6 +7,25 @@
         <p>
             <a> <?=$zadanieTodo['description'];?></a>
         </p>
+        <?php if(array_key_exists('komentarze',$zadanieTodo)): ?>
+            <p>Liczba komentarzy: <?=count($zadanieTodo['komentarze']);?></p>
+
+            <div class="ukryj-mnie">
+                <?php foreach($zadanieTodo['komentarze'] as $komentarz):
+                ?>
+                <hr />
+                <h5><?=$komentarz['text'];?></h5>
+                <p><?=$komentarz['date_created'];?></p>
+                <?php
+                endforeach;
+                ?>
+
+            </div>
+
+
+        <?php else:?>
+            <p>Brak komentarzy</p>
+        <?php endif;?>
         <button class="btn btn-primary btn-sm">View</button>
     </div>
 </div>
