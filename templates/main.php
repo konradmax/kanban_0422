@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -14,9 +15,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <!-- Custom styles for this template -->
 
-
     <?php
-    if($_SESSION['zalogowany']==1):
+    if(array_key_exists('zalogowany',$_SESSION)&&$_SESSION['zalogowany']==1):
     ?>
         <link href="assets/css/swimlane.css" rel="stylesheet">
     <?php
@@ -26,13 +26,15 @@
     <?php
     endif;
     ?>
+
+
 </head>
 <body class="text-center">
 
 <main <?php if(isset($_SESSION['zalogowany'])&&$_SESSION['zalogowany']==0):?>class="form-signin"<?php endif;?>>
 
     <?php
-    if($_SESSION['zalogowany']==1):
+    if(array_key_exists('zalogowany',$_SESSION)&&$_SESSION['zalogowany']==1):
         include("swimlane.php");
     else:
         include("form.php");

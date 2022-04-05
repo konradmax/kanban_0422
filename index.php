@@ -54,7 +54,7 @@ if(isset($_POST)
 }
 
 #ZMIEN HASLO
-if($_SESSION['zalogowany']==1) {
+if(array_key_exists('zalogowany',$_SESSION)&&$_SESSION['zalogowany']==1) {
 
     // zalogowany
     $listaZadan = getTasksByUserAndStatusWithComments($_SESSION['user_id'],1);

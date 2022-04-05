@@ -80,3 +80,7 @@ function getCommentsByTaskIdAndUserId($task_id,$user_id) {
     return $result;
 
 }
+
+function updateStatus($id,$status){
+    $sql = sprintf("UPDATE `tasks` SET `status` = '%d' WHERE `tasks`.`id` = %d;",$status,$id);
+}

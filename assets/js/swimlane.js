@@ -35,7 +35,7 @@ var updateDropzones = function(){
       so there is a dropzone after each item
       using jQuery here for simplicity */
 
-    var dz = $('<div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>');
+    var dz = $('<div class="dropzone rounded" ondrop="drop(event);updateInputStatusDrop(this)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>');
 
     // delete old dropzones
     $('.dropzone').remove();
@@ -65,4 +65,43 @@ function removeClass(ele,cls) {
 
 function unwrap(node) {
     node.replaceWith(...node.childNodes);
+}
+
+
+function updateInputStatusDrag(element) {
+    console.log(element);
+
+    // find out to which lane the item been dropped
+    // get status value and update hiddens input value
+    var swimlaneStatusValueFrom = $(element).closest("[data-status-value]").attr('data-status-value');
+    var swimlaneStatusValueFrom = $(element).closest("[data-status-value]").attr('data-status-value');
+
+    // var swimlaneStatusValue = $(element).children('.card').attr('data-status-value');
+
+
+    // var swimlaneStatusValue = element.parent().getAttribute('data-id');
+
+
+console.log(swimlaneStatusValueFrom);
+
+}
+
+function updateInputStatusDrop(element) {
+    console.log(element);
+    var data = element.dataTransfer.getData();
+    // find out to which lane the item been dropped
+    // get status value and update hiddens input value
+    var swimlaneStatusValueFrom = $(element).closest("[data-status-value]").attr('data-status-value');
+
+    // var swimlaneStatusValueFrom = $(element).parent("[data-status-value]").attr('data-status-value');
+
+    // var swimlaneStatusValue = $(element).children('.card').attr('data-status-value');
+
+
+    // var swimlaneStatusValue = element.parent().getAttribute('data-id');
+
+
+console.log(swimlaneStatusValueFrom);
+console.log(data);
+
 }
