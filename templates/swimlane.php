@@ -1,4 +1,5 @@
-<div class="container-fluid pt-3">
+
+<div class="container-fluid pt-4">
     <h3 class="font-weight-light text-white">Kanban Board</h3>
     <div class="small  text-light">Drag and drop between swim lanes</div>
     <div class="row flex-row flex-sm-nowrap py-3">
@@ -105,3 +106,4 @@ endforeach;
         </div>
     </div>
 </div>
+

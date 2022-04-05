@@ -30,7 +30,6 @@ function getTasksByUserAndStatusWithComments($user_id,$status)
         foreach($listaZadan as $index=>$pojedynczeZadanie) {
 
             $kommentarze = getCommentsByTaskId($pojedynczeZadanie->id);
-
             $listaZadan[$index] = $pojedynczeZadanie->attachComments($kommentarze);
 
 
@@ -55,8 +54,13 @@ function getCommentsByTaskId($task_id) {
     $sth->execute();
 
     $result = $sth->fetchAll();
+    $output = [];
 
-    return $result;
+    foreach($result as $item) {
+        $output[] = new Comment($item);
+    }
+
+    return $output;
 }
 
 function getCommentsByTaskIdAndUserId($task_id,$user_id) {

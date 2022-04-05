@@ -2,19 +2,19 @@
 
 class Task
 {
-    public $id;
+    public int $id;
 
-    public $user_id;
+    public int $user_id;
 
-    public $title;
+    public string $title;
 
-    public $description;
+    public string $description;
 
-    public $status;
+    public int $status;
 
-    public $comments;
+    public array $comments = [];
 
-    public function __construct($data)
+    public function __construct(array $data)
     {
         $this->id = $data['id'];
         $this->user_id = $data['user_id'];
@@ -23,7 +23,7 @@ class Task
         $this->status = $data['status'];
     }
 
-    public function attachComments($comments) {
+    public function attachComments(array $comments) {
         $this->comments = $comments;
 
         return $this;
