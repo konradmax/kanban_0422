@@ -35,7 +35,7 @@ var updateDropzones = function(){
       so there is a dropzone after each item
       using jQuery here for simplicity */
 
-    var dz = $('<div class="dropzone rounded" ondrop="drop(event);updateInputStatusDrop(this)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>');
+    var dz = $('<div class="dropzone rounded" ondrop="drop(event);updateInputStatusDrop(this);iterateSwimlanes();" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>');
 
     // delete old dropzones
     $('.dropzone').remove();
@@ -69,7 +69,7 @@ function unwrap(node) {
 
 
 function updateInputStatusDrag(element) {
-    console.log(element);
+    // console.log(element);
 
     // find out to which lane the item been dropped
     // get status value and update hiddens input value
@@ -82,16 +82,19 @@ function updateInputStatusDrag(element) {
     // var swimlaneStatusValue = element.parent().getAttribute('data-id');
 
 
-console.log(swimlaneStatusValueFrom);
+// console.log(swimlaneStatusValueFrom);
 
 }
 
 function updateInputStatusDrop(element) {
-    console.log(element);
-    var data = element.dataTransfer.getData();
-    // find out to which lane the item been dropped
+    // console.log(element.getAttribute('class'));
+    // var data = element.dataTransfer.getData();
+    // find out to which lane the item been dropp6ed
     // get status value and update hiddens input value
     var swimlaneStatusValueFrom = $(element).closest("[data-status-value]").attr('data-status-value');
+    var swimlaneStatusValueFrom = $(element).closest("[data-id]").attr('data-id');
+
+    // let listItemIndex = element.originalEvent;
 
     // var swimlaneStatusValueFrom = $(element).parent("[data-status-value]").attr('data-status-value');
 
@@ -100,8 +103,44 @@ function updateInputStatusDrop(element) {
 
     // var swimlaneStatusValue = element.parent().getAttribute('data-id');
 
+// console.log(listItemIndex);
+// console.log($(this));
+// console.log(swimlaneStatusValueFrom);
+// console.log(data);
 
-console.log(swimlaneStatusValueFrom);
-console.log(data);
+}
+
+
+document.addEventListener("dragend", function(event) {
+    iterateSwimlanes();
+    // console.log(event);
+    // console.log(event.dataTransfer);
+    // document.getElementById("demo").innerHTML = "Finished dragging the p element.";
+    // event.target.style.opacity = "1";
+});
+
+// odnalezc metode dzieki ktorej przy dragu znajdujemy kolumne z ktorej wychodzi zadanie i zastosowac ja do tego zeby odnalezc kolumne w ktorej robimy drop
+
+function iterateItems() {
+    $( ".card-item" ).each(function( index ) {
+
+        let statusInputValue = $(this).closest('.card-item ').children('.card-item-status')
+// console.log(statusInputValue);
+
+        let ajdi = $( this ).attr('data-id');
+        let status = $( this ).closest('.card-swimlane').attr('data-status-value');
+        let statusInput = $( this ).closest('.card-item-status');
+        console.log( "Item: ["+ ajdi + "] ["+status+"]  ::::" + statusInput );
+    });
+}
+
+function iterateSwimlanes() {
+    iterateItems();
+
+    // console.log($( ".card-swimlane" ).length);
+    // $( ".card-swimlane" ).each(function( index ) {
+    //     console.log( "Swimlane: "+ index );
+    //     iterateItems(index);
+    // });
 
 }

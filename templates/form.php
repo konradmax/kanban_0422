@@ -1,4 +1,4 @@
-<form method="POST">
+<form method="POST" name="zapisz">
     <h1 class="h3 mb-3 fw-normal"><?=$header;?></h1>
     <div class="form-floating">
         <input type="text" name="uzyszkodnik" value="testowy" class="form-control" id="floatingInput" placeholder="name@example.com">

@@ -11,7 +11,9 @@ session_start();
 
 
 
-
+if(array_key_exists('name',$_POST)) {
+    var_dump($_P-sST);die();
+}
 
 $post = $_POST;
 $header = "lubiemaslo";
@@ -58,6 +60,7 @@ if(array_key_exists('zalogowany',$_SESSION)&&$_SESSION['zalogowany']==1) {
 
     // zalogowany
     $listaZadan = getTasksByUserAndStatusWithComments($_SESSION['user_id'],1);
+
 
 
 

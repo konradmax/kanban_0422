@@ -1,4 +1,4 @@
-<div class="card draggable shadow-sm" data-id="<?=$zadanieTodo->id;?>" draggable="true" ondragstart="drag(event);updateInputStatusDrag(this);">
+<div class="card card-item card-item draggable shadow-sm" id="cd<?=$zadanieTodo->id;?>" data-id="<?=$zadanieTodo->id;?>" draggable="true" ondragstart="drag(event);updateInputStatusDrag(this);">
     <div class="card-body p-2">
         <div class="card-title">
             <img src="//upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Windows_Settings_app_icon.png/30px-Windows_Settings_app_icon.png" class="rounded-circle float-right">
@@ -32,7 +32,7 @@
         <?php endif;?>
     </div>
     <div class="hidden">
-        <input type="hidden" name="zadanie[<?=$zadanieTodo->id;?>]" value="<?=$zadanieTodo->status;?>" />
+        <input type="hidden" class="card-item-status" name="zadanie[<?=$zadanieTodo->id;?>]" value="<?=$zadanieTodo->status;?>" />
     </div>
 </div>
 <!---->
