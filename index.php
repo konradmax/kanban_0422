@@ -12,7 +12,7 @@ session_start();
 
 
 if(array_key_exists('name',$_POST)) {
-    var_dump($_P-sST);die();
+    var_dump($_POST);die();
 }
 
 $post = $_POST;

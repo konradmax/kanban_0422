@@ -123,14 +123,12 @@ document.addEventListener("dragend", function(event) {
 
 function iterateItems() {
     $( ".card-item" ).each(function( index ) {
-
-        let statusInputValue = $(this).closest('.card-item ').children('.card-item-status')
-// console.log(statusInputValue);
-
         let ajdi = $( this ).attr('data-id');
-        let status = $( this ).closest('.card-swimlane').attr('data-status-value');
-        let statusInput = $( this ).closest('.card-item-status');
-        console.log( "Item: ["+ ajdi + "] ["+status+"]  ::::" + statusInput );
+        let statusValue = $( this ).closest('.card-swimlane').attr('data-status-value');
+        var statusInput = $(this).find('.card-item-status');
+        statusInput.val(statusValue);
+
+        console.log( "Item: [" + ajdi + "] [" + statusValue + "]  ::::" + statusInput );
     });
 }
 
