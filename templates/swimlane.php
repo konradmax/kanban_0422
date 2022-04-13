@@ -2,7 +2,7 @@
 <div class="container-fluid pt-3">
     <h3 class="font-weight-light text-white">Kanban Board</h3>
     <div class="small  text-light">Drag and drop between swim lanes</div>
-    <form method="POST" action="">
+    <form method="POST" action="?page=swimlanes&action=update">
         <input type="hidden" name="form_name" value="swimlane_update" />
         <input type="submit" name="" class="btn btn-primary" />
     <div class="row flex-row py-3">
@@ -22,7 +22,7 @@
 
                         <?php
                         endforeach;
-var_dump($_SESSION);
+
                         if(count($content['swimlaneModel']->getTasksByUserAndStatus($_SESSION['user_id'],1))):
                             ?>
 

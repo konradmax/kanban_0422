@@ -12,7 +12,7 @@ class Application {
      * @return string
      * @throws Exception
      */
-    public function dispatch($page)
+    public function dispatch(string $page) : string
     {
         $controller = new Controller();
         $view = new View();

@@ -1,0 +1,10 @@
+{
+  "swimlane":{
+    "controller": "Controller",
+    "models": {
+      "SwimlaneModel": {
+        "phpClass": "SwimlaneModel"
+      }
+    }
+  }
+}
