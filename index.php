@@ -69,12 +69,15 @@ if(array_key_exists('zalogowany',$_SESSION)&&$_SESSION['zalogowany']==1) {
     $formName = "change_password";
 
 
+
     if(isset($_POST)
         && is_array($_POST)
         && ! empty($_POST['uzyszkodnik'])
         && ! empty($_POST['password'])
         && strlen($_POST['password']) > 3
     ) {
+
+        //user sent password change form
 
         $username1 = $_POST['uzyszkodnik'];
         $password = $_POST['password'];
@@ -100,6 +103,31 @@ if(array_key_exists('zalogowany',$_SESSION)&&$_SESSION['zalogowany']==1) {
 //            var_dump($pdo->query($sql));
         }
 
+    } elseif(isset($_POST['form_name'])&&$_POST['form_name']==="swimlane_update") {
+        // user sent swimlane form
+       // echo "<pre>"; var_dump($_POST);die();
+
+        if(isset($_POST["zadanie"])) {
+            foreach($_POST["zadanie"] as $zadanieId=>$statusId){
+                $sql = sprintf('SELECT * FROM tasks WHERE id=%d AND status=%d LIMIT 1 ',
+                    $zadanieId,
+                    $statusId
+                );
+                //var_dump($sql); die();
+
+                $pdo = new PDO('mysql:host=localhost;dbname=test', 'root');
+
+                $count = $pdo->query($sql)->rowCount();
+                if($count==0) {
+                    $sql = sprintf('UPDATE tasks SET status = %d WHERE tasks.id = %d;',
+                        $statusId,
+                        $zadanieId
+                    );
+                    $pdo->query($sql);
+//            var_dump($pdo->query($sql));
+                }
+            }
+        }
     }
 
     echo "<a href='?akcja=wyloguj' >wyloguj</a>";
