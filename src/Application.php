@@ -2,6 +2,7 @@
 require_once('Controller.php');
 require_once('View.php');
 
+
 class Application {
 
     /**
@@ -15,6 +16,7 @@ class Application {
     {
         $controller = new Controller();
         $view = new View();
+
 
         if( false === method_exists($controller,$page)) {
             // the sprintf() actually helps with debugging. so the admin will report the err-msg
