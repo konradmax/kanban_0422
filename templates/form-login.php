@@ -1,6 +1,6 @@
-<form method="POST" name="zapisz">
+<form method="POST" name="zapisz" action="?page=login">
     <input type="hidden" name="form_name" value="" />
-    <h1 class="h3 mb-3 fw-normal"><?=$header;?></h1>
+    <h1 class="h3 mb-3 fw-normal"><?=$content['page_title'];?></h1>
     <div class="form-floating">
         <input type="text" name="uzyszkodnik" value="testowy" class="form-control" id="floatingInput" placeholder="name@example.com">
         <label for="floatingInput">Email address</label>
@@ -10,7 +10,7 @@
         <label for="floatingPassword">Password</label>
     </div>
     <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-    <input type="hidden" name="form_name" value="<?=$formName;?>">
+    <input type="hidden" name="form_name" value="<?=$content['form_name'];?>">
 </form>
 
 <!--<form action="" method="POST" name="--><?//=$formName;?><!--">-->

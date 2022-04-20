@@ -2,7 +2,7 @@
 <div class="container-fluid pt-3">
     <h3 class="font-weight-light text-white">Kanban Board</h3>
     <div class="small  text-light">Drag and drop between swim lanes</div>
-    <form method="POST" action="">
+    <form method="POST" action="?page=swimlanes&action=update">
         <input type="hidden" name="form_name" value="swimlane_update" />
         <input type="submit" name="" class="btn btn-primary" />
     <div class="row flex-row py-3">
@@ -13,7 +13,7 @@
                     <div class="items border border-light">
 
                         <?php
-                        $taskTodo = getTasksByUserAndStatusWithComments($_SESSION['user_id'],1);
+                        $taskTodo = $content['swimlaneModel']->getTasksByUserAndStatusWithComments($_SESSION['user_id'],1);
 
                         foreach($taskTodo as $zadanieTodo):
                         include("templates/swimlane-item.php");
@@ -23,7 +23,7 @@
                         <?php
                         endforeach;
 
-                        if(count(getTasksByUserAndStatus($_SESSION['user_id'],1))):
+                        if(count($content['swimlaneModel']->getTasksByUserAndStatus($_SESSION['user_id'],1))):
                             ?>
 
 
@@ -41,7 +41,7 @@
                     <div class="items border border-light">
 
                                               <?php
-                        $taskTodo = getTasksByUserAndStatus($_SESSION['user_id'],2);
+                        $taskTodo = $content['swimlaneModel']->getTasksByUserAndStatus($_SESSION['user_id'],2);
 foreach($taskTodo as $zadanieTodo):
 
 include("templates/swimlane-item.php");
@@ -64,7 +64,7 @@ endforeach;
                     <h6 class="card-title text-uppercase text-truncate py-2">Review</h6>
                     <div class="items border border-light">
                         <?php
-                        $taskTodo = getTasksByUserAndStatus($_SESSION['user_id'],3);
+                        $taskTodo = $content['swimlaneModel']->getTasksByUserAndStatus($_SESSION['user_id'],3);
                         foreach($taskTodo as $zadanieTodo):
 
                             include("templates/swimlane-item.php");
@@ -89,7 +89,7 @@ endforeach;
 
 
                         <?php
-                        $taskTodo = getTasksByUserAndStatus($_SESSION['user_id'],4);
+                        $taskTodo = $content['swimlaneModel']->getTasksByUserAndStatus($_SESSION['user_id'],4);
                         foreach($taskTodo as $index=>$zadanieTodo):
 
                             include("templates/swimlane-item.php");
