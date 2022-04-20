@@ -42,6 +42,120 @@ class Controller {
         return $this->view->setContent($content)->render("home");
     }
 
+    public function edit() {
+        $zadanieId=filter_var($_GET['id'],FILTER_SANITIZE_NUMBER_INT);
+
+        if( $_SERVER['REQUEST_METHOD'] === 'POST'
+            && array_key_exists('id',$_GET)
+            && $_GET['id']>0) {
+            // user posted data
+
+            $r = explode(".", $_FILES['image']['name']);
+            $newExt = end($r);
+            $newFilename = $this->generateRandomString() . '.' . $newExt;
+
+
+//            echo "<pre>";
+//            var_dump($_POST);
+//            var_dump($_FILES['image']);
+
+            $fileTmp = $_FILES['image']['tmp_name'];
+            move_uploaded_file($fileTmp,'./img/'.$newFilename );
+
+            $zadanieId=filter_var($_GET['id'],FILTER_SANITIZE_NUMBER_INT);
+            $sql = sprintf('SELECT * FROM tasks WHERE id=%d LIMIT 1 ',
+                $zadanieId
+            );
+            $pdo = new PDO('mysql:host=localhost;dbname=test', 'root');
+
+            $query = $pdo->query($sql);
+            $count = $query->rowCount();
+            if($count!=0) {
+                $result = $query->fetch();
+
+                var_dump($result);
+                $result = $result;
+
+            }
+
+            $changed = false;
+
+            $inputChange = ['title','description','status'];
+
+            foreach($inputChange as $inputName) {
+                if( isset($_POST[$inputName])
+                    && isset($result[$inputName])
+                    AND $_POST[$inputName]!==$result[$inputName]
+                ) {
+                    $changed[$inputName] = $inputName;
+                }
+            }
+
+            if($changed) {
+                // sql update
+                $i=0;
+                $sql = "UPDATE tasks SET  ";
+                foreach($changed as $changedInputName => $changedInputValue) {
+                    if($i!==0) { $sql .=",";}
+
+                    $sql .= " " . $changedInputName.'="'. $changedInputValue .'"';
+                    $i++;
+                }
+                if($newFilename) {
+                    $sql .= ", image='" . $newFilename . "'";
+                }
+
+                $sql .= " WHERE id=" . $zadanieId;
+
+                $pdo->query($sql);
+
+
+            }
+
+        } elseif(array_key_exists('id',$_GET)
+            && $_GET['id']>0) {
+
+            $content['page_title'] = "Edit Item.";
+            $content['form_name'] = "form_item_edit";
+            $content['content'] = null;
+
+
+            $zadanieId=filter_var($_GET['id'],FILTER_SANITIZE_NUMBER_INT);
+            $sql = sprintf('SELECT * FROM tasks WHERE id=%d LIMIT 1 ',
+                $zadanieId
+            );
+            $pdo = new PDO('mysql:host=localhost;dbname=test', 'root');
+
+            $query = $pdo->query($sql);
+            $count = $query->rowCount();
+            if($count!=0) {
+                $result = $query->fetch();
+                $content['result'] = $result;
+
+            }
+
+
+
+            // display form
+            return $this->view->setContent($content)->render("form-task-item");
+
+        }
+        return $this->view->setContent('')->render("form-task-item");
+
+
+        return 'edit';
+    }
+
+    function generateRandomString($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+
     public function swimlanes()
     {
 
@@ -54,6 +168,8 @@ class Controller {
 
                 if(isset($_POST["zadanie"])) {
                     foreach($_POST["zadanie"] as $zadanieId=>$statusId){
+                        $zadanieId=filter_var($zadanieId,FILTER_SANITIZE_NUMBER_INT);
+                        $statusId=filter_var($statusId,FILTER_SANITIZE_NUMBER_INT);
                         $sql = sprintf('SELECT * FROM tasks WHERE id=%d AND status=%d LIMIT 1 ',
                             $zadanieId,
                             $statusId
@@ -69,7 +185,8 @@ class Controller {
                                 $zadanieId
                             );
                             $pdo->query($sql);
-//            var_dump($pdo->query($sql));
+
+
                         }
                     }
                 }
@@ -80,8 +197,6 @@ class Controller {
         $swimlaneModel = new SwimlaneModel();
 
         $swimlanes = $swimlaneModel->getTasksByUserAndStatus(1,1);
-
-        var_dump($_POST);
 
         $content['page_title'] = "updateSwimlane!";
         $content['swimlanes'] = $swimlanes;

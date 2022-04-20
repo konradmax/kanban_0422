@@ -10,6 +10,8 @@ class Task
 
     public string $description;
 
+    public string $image;
+
     public int $status;
 
     public array $comments = [];
@@ -20,6 +22,7 @@ class Task
         $this->user_id = $data['user_id'];
         $this->title = $data['title'];
         $this->description = $data['description'];
+        $this->image = $data['image'];
         $this->status = $data['status'];
     }
 

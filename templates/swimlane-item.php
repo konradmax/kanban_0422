@@ -2,7 +2,7 @@
     <div class="card-body p-2">
         <div class="card-title">
             <img src="//upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Windows_Settings_app_icon.png/30px-Windows_Settings_app_icon.png" class="rounded-circle float-right">
-            <a href="" class="lead font-weight-light"><?=$zadanieTodo->title;?></a>
+            <a href="?page=edit&id=<?=$zadanieTodo->id;?>" target="_self" class="lead font-weight-light"><?=$zadanieTodo->title;?></a>
         </div>
 
         <p>
@@ -18,7 +18,7 @@
                 <?php foreach($zadanieTodo->comments as $komentarz):
                 ?>
                 <hr />
-                <h5><?=$komentarz->getText();?></h5>
+                    <h5><?=$komentarz->getText();?></h5>
                     <p><?=$komentarz->getDate();?></p>
                 <?php
                 endforeach;
