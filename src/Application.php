@@ -4,6 +4,7 @@ namespace Max\Dashboard;
 
 use Max\Dashboard\Controller;
 use Max\Dashboard\View;
+use Max\Dashboard\Authenticate;
 
 
 class Application {
@@ -20,6 +21,8 @@ class Application {
      */
     public function dispatch() : string
     {
+        $auth = new Authenticate();
+//        var_dump($auth->isAuthenticated());die();
         $view = new View();
 
         $pageGet = !empty($_GET['page']) ? filter_var($_GET['page'], FILTER_SANITIZE_STRING) : "homepage";
@@ -27,6 +30,16 @@ class Application {
 
         if(array_key_exists($pageGet,$this->config['routes'])) {
             // page is declared in config file. There is custom controller.
+            if(array_key_exists('restricted',$this->config['routes'][$pageGet])
+                && $this->config['routes'][$pageGet]['restricted'] ===true
+            ) {
+                if( ! $auth->isAuthenticated()) {
+                    $_SESSION['message'][] = "Must be logged in.";
+                    header('Location: http://localhost/dashboard/?page=login');
+                    exit;
+                }
+            }
+
             $controller = new $this->config['routes'][$pageGet]['controller'];
             $content['content'] = $controller->$actionGet();
         } else {

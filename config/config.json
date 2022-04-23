@@ -4,18 +4,8 @@
       "controller": "Max\\Dashboard\\Controller\\HomepageController",
       "restricted": false
     },
-    "login":{
-      "controller": "AuthController",
-      "action": "login",
-      "restricted": false
-    },
-    "logout":{
-      "controller": "AuthController",
-      "action": "logout",
-      "restricted": false
-    },
     "swimlanes":{
-      "controller": "SwimlanesController",
+      "controller": "Max\\Dashboard\\Controller\\SwimlanesController",
       "restricted": true
     }
   }

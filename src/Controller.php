@@ -162,62 +162,6 @@ class Controller {
         return $randomString;
     }
 
-    public function swimlanes()
-    {
-
-        if(isset($_GET['action'])
-            && $_GET['action']=='update') {
-            // form has been submitted
-            if(isset($_POST['form_name'])&&$_POST['form_name']==="swimlane_update") {
-                // user sent swimlane form
-                // echo "<pre>"; var_dump($_POST);die();
-
-                if(isset($_POST["zadanie"])) {
-                    foreach($_POST["zadanie"] as $zadanieId=>$statusId){
-                        $zadanieId=filter_var($zadanieId,FILTER_SANITIZE_NUMBER_INT);
-                        $statusId=filter_var($statusId,FILTER_SANITIZE_NUMBER_INT);
-                        $sql = sprintf('SELECT * FROM tasks WHERE id=%d AND status=%d LIMIT 1 ',
-                            $zadanieId,
-                            $statusId
-                        );
-                        //var_dump($sql); die();
-
-                        $pdo = new PDO('mysql:host=localhost;dbname=test', 'root');
-
-                        $count = $pdo->query($sql)->rowCount();
-                        if($count==0) {
-                            $sql = sprintf('UPDATE tasks SET status = %d WHERE tasks.id = %d;',
-                                $statusId,
-                                $zadanieId
-                            );
-                            $pdo->query($sql);
-
-
-                        }
-                    }
-                }
-            }
-
-        }
-
-        $swimlaneModel = new SwimlaneModel();
-
-        $swimlanes = $swimlaneModel->getTasksByUserAndStatus(1,1);
-
-        $content['page_title'] = "updateSwimlane!";
-        $content['swimlanes'] = $swimlanes;
-        $content['swimlaneModel'] = $swimlaneModel;
-        // check for messages
-        if( array_key_exists('messages',$_SESSION)
-            && ! empty($_SESSION['messages']))
-        {
-            $content['messages'] = $_SESSION['messages'];
-            unset($_SESSION['messages']);
-        }
-
-        return $this->view->setContent($content)->render("swimlane");
-    }
-
     public function login() {
         if(isset($_POST)
             && is_array($_POST)
