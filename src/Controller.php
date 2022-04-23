@@ -259,4 +259,29 @@ class Controller {
 
     }
 
+    public function newUser() {
+        if (isset ($_POST)
+            && array_key_exists('form_name',$_POST)
+            && $_POST['form_name']==='new_user')
+
+        {
+
+            $name = $_POST['name'];
+            $pass = $_POST['password'];
+
+            // create database object
+            $pdo = new PDO('mysql:host=localhost;dbname=test', 'root');
+
+            // prepare sql statement
+            $sql = sprintf('INSERT INTO users (id, username, password, status) VALUES (NULL, "%s" , "%s", 1)',
+                $name,
+                $pass
+            );
+            $pdo->query($sql);
+
+        }
+    }
+
 }
+
+
