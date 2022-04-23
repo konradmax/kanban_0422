@@ -1,5 +1,7 @@
 <?php
 
+namespace Max\Dashboard;
+
 /**
  * Class ProductDataStore
  * A database interface for storing your products!

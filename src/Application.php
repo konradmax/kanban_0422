@@ -1,6 +1,9 @@
 <?php
-require_once('Controller.php');
-require_once('View.php');
+
+namespace Max\Dashboard;
+
+use Max\Dashboard\Controller;
+use Max\Dashboard\View;
 
 
 class Application {

@@ -1,5 +1,8 @@
 <?php
 
+
+namespace Max\Dashboard;
+
 class View {
     protected $content;
 

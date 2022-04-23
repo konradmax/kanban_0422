@@ -18,8 +18,8 @@
         <?=$content['result']['image'];?>
     </div>
     <div class="">
-        <label for="cboStatus">Status</label>
-        <select name="cboStatus">
+        <label for="status">Status</label>
+        <select name="status" id="status">
             <option value="1" <?=($content['result']['status']==1)?'selected="selected"':null;?>>1</option>
             <option value="2" <?=($content['result']['status']==2)?'selected="selected"':null;?>>2</option>
             <option value="3" <?=($content['result']['status']==3)?'selected="selected"':null;?>>3</option>
@@ -29,11 +29,3 @@
     <button class="w-100 btn btn-lg btn-primary" type="submit">Zapisz</button>
     <input type="hidden" name="form_name" value="<?=$content['form_name'];?>">
 </form>
-<?php var_dump($content['result']);?>
-
-<!--<form action="" method="POST" name="--><?//=$formName;?><!--">-->
-<!--    <input type="text" name="uzyszkodnik" />-->
-<!--    <input type="password" name="password" />-->
-<!--    <input type="hidden" name="form_name" value="--><?//=$formName;?><!--" />-->
-<!--    <input type="submit" />-->
-<!--</form>-->

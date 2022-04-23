@@ -56,6 +56,10 @@
                 <li class="nav-item">
                     <a class="nav-link" href="?page=login">Login</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="?page=newuser">New Account</a>
+                </li>
+
             <?php
                 endif;
             ?>

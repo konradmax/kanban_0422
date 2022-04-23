@@ -1,8 +1,11 @@
 <?php
 
-class Task
+namespace Max\Dashboard\Entity;
+
+use Max\Dashboard\Entity\BasicEntity;
+
+class UserEntity extends BasicEntity
 {
-    public int $id;
 
     public int $user_id;
 
@@ -11,8 +14,6 @@ class Task
     public string $description;
 
     public string $image;
-
-    public int $status;
 
     public array $comments = [];
 

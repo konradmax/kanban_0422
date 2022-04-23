@@ -1,6 +1,7 @@
 
 <div class="container-fluid pt-3">
     <h3 class="font-weight-light text-white">Kanban Board</h3>
+    <?php include('messages.php');?>
     <div class="small  text-light">Drag and drop between swim lanes</div>
     <form method="POST" action="?page=swimlanes&action=update">
         <input type="hidden" name="form_name" value="swimlane_update" />

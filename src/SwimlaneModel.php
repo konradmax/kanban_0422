@@ -1,12 +1,16 @@
 <?php
-require_once('Task.php');
+
+namespace Max\Dashboard;
+
+use Max\Dashboard\Entity\TaskEntity;
+use \PDO;
 
 class SwimlaneModel
 {
 
     function getTasksByUserAndStatus($user_id,$status) {
 
-    $pdo = new PDO('mysql:host=localhost;dbname=test', 'root');
+    $pdo = new PDO($_SERVER['DB_DSN'], $_SERVER['DB_USER']);
 
     // prepare sql statement
     $sql = sprintf('SELECT * FROM tasks WHERE user_id=%d AND status=%d',
@@ -21,7 +25,7 @@ class SwimlaneModel
     $output = [];
 
     foreach($result as $item) {
-        $output[] = new Task($item);
+        $output[] = new TaskEntity($item);
     }
 
     return $output;
@@ -49,7 +53,7 @@ class SwimlaneModel
 
     function getCommentsByTaskId($task_id) {
 
-        $pdo = new PDO('mysql:host=localhost;dbname=test', 'root');
+        $pdo = new PDO($_SERVER['DB_DSN'], $_SERVER['DB_USER']);
 
         // prepare sql statement
         $sql = sprintf('SELECT * FROM comments WHERE task_id=%d LIMIT 3',
@@ -62,7 +66,7 @@ class SwimlaneModel
         $output = [];
 
         foreach($result as $item) {
-            $output[] = new Comment($item);
+            //$output[] = new Comment($item);
         }
 
         return $output;
@@ -70,7 +74,7 @@ class SwimlaneModel
 
     function getCommentsByTaskIdAndUserId($task_id,$user_id) {
 
-        $pdo = new PDO('mysql:host=localhost;dbname=test', 'root');
+        $pdo = new PDO($_SERVER['DB_DSN'], $_SERVER['DB_USER']);
 
         // prepare sql statement
         $sql = sprintf('SELECT * FROM comments WHERE task_id=%d AND user_id=%d LIMIT 3',
@@ -84,10 +88,6 @@ class SwimlaneModel
 
         return $result;
 
-    }
-
-    function updateStatus($id,$status){
-        $sql = sprintf("UPDATE `tasks` SET `status` = '%d' WHERE `tasks`.`id` = %d;",$status,$id);
     }
 
 

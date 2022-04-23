@@ -1,3 +1,4 @@
+<?php include('messages.php');?>
 <form method="POST" name="zapisz" action="?page=login">
     <input type="hidden" name="form_name" value="" />
     <h1 class="h3 mb-3 fw-normal"><?=$content['page_title'];?></h1>
@@ -13,11 +14,3 @@
     <input type="hidden" name="form_name" value="<?=$content['form_name'];?>">
 </form>
 
-<a href="templates/new-user.php">Załóż konto</a>
-
-<!--<form action="" method="POST" name="--><?//=$formName;?><!--">-->
-<!--    <input type="text" name="uzyszkodnik" />-->
-<!--    <input type="password" name="password" />-->
-<!--    <input type="hidden" name="form_name" value="--><?//=$formName;?><!--" />-->
-<!--    <input type="submit" />-->
-<!--</form>-->

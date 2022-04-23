@@ -1,7 +1,11 @@
 <?php
-require_once('ProductDataStore.php');
-require_once('View.php');
-require_once('SwimlaneModel.php');
+
+namespace Max\Dashboard;
+
+use Max\Dashboard\ProductDataStore;
+use Max\Dashboard\SwimlaneModel;
+use Max\Dashboard\View;
+use \PDO;
 
 class Controller {
 
@@ -43,29 +47,33 @@ class Controller {
     }
 
     public function edit() {
-        $zadanieId=filter_var($_GET['id'],FILTER_SANITIZE_NUMBER_INT);
+
 
         if( $_SERVER['REQUEST_METHOD'] === 'POST'
             && array_key_exists('id',$_GET)
             && $_GET['id']>0) {
             // user posted data
-
-            $r = explode(".", $_FILES['image']['name']);
-            $newExt = end($r);
-            $newFilename = $this->generateRandomString() . '.' . $newExt;
-
-
-//            echo "<pre>";
-//            var_dump($_POST);
-//            var_dump($_FILES['image']);
-
-            $fileTmp = $_FILES['image']['tmp_name'];
-            move_uploaded_file($fileTmp,'./img/'.$newFilename );
-
             $zadanieId=filter_var($_GET['id'],FILTER_SANITIZE_NUMBER_INT);
+            #TODO: form validation
+
+            // generate new filename for image
+            if(is_uploaded_file($_FILES['image']['tmp_name'])) {
+                $r = explode(".", $_FILES['image']['name']);
+
+                $newExt = end($r);
+                $newFilename = $this->generateRandomString() . '.' . $newExt;
+                // move uploaded file
+                $fileTmp = $_FILES['image']['tmp_name'];
+                move_uploaded_file($fileTmp,'./img/'.$newFilename );
+            } else {
+                $newFilename = false;
+            }
+
+
             $sql = sprintf('SELECT * FROM tasks WHERE id=%d LIMIT 1 ',
                 $zadanieId
             );
+
             $pdo = new PDO('mysql:host=localhost;dbname=test', 'root');
 
             $query = $pdo->query($sql);
@@ -73,21 +81,19 @@ class Controller {
             if($count!=0) {
                 $result = $query->fetch();
 
-                var_dump($result);
-                $result = $result;
-
             }
 
             $changed = false;
 
             $inputChange = ['title','description','status'];
 
+            // check if any data have been changed
             foreach($inputChange as $inputName) {
                 if( isset($_POST[$inputName])
                     && isset($result[$inputName])
                     AND $_POST[$inputName]!==$result[$inputName]
                 ) {
-                    $changed[$inputName] = $inputName;
+                    $changed[$inputName] = $_POST[$inputName];
                 }
             }
 
@@ -95,10 +101,10 @@ class Controller {
                 // sql update
                 $i=0;
                 $sql = "UPDATE tasks SET  ";
+
                 foreach($changed as $changedInputName => $changedInputValue) {
                     if($i!==0) { $sql .=",";}
-
-                    $sql .= " " . $changedInputName.'="'. $changedInputValue .'"';
+                    $sql .= " " . $changedInputName.'="'. $changed[$changedInputName] .'"';
                     $i++;
                 }
                 if($newFilename) {
@@ -109,7 +115,9 @@ class Controller {
 
                 $pdo->query($sql);
 
-
+                $_SESSION['messages'][] = "Dane zostaly zaktualizowane.";
+                header('Location: http://localhost/dashboard?page=swimlanes');
+                exit;
             }
 
         } elseif(array_key_exists('id',$_GET)
@@ -124,7 +132,7 @@ class Controller {
             $sql = sprintf('SELECT * FROM tasks WHERE id=%d LIMIT 1 ',
                 $zadanieId
             );
-            $pdo = new PDO('mysql:host=localhost;dbname=test', 'root');
+            $pdo = new PDO($_SERVER['DB_DSN'], $_SERVER['DB_USER']);
 
             $query = $pdo->query($sql);
             $count = $query->rowCount();
@@ -133,8 +141,6 @@ class Controller {
                 $content['result'] = $result;
 
             }
-
-
 
             // display form
             return $this->view->setContent($content)->render("form-task-item");
@@ -201,12 +207,18 @@ class Controller {
         $content['page_title'] = "updateSwimlane!";
         $content['swimlanes'] = $swimlanes;
         $content['swimlaneModel'] = $swimlaneModel;
+        // check for messages
+        if( array_key_exists('messages',$_SESSION)
+            && ! empty($_SESSION['messages']))
+        {
+            $content['messages'] = $_SESSION['messages'];
+            unset($_SESSION['messages']);
+        }
 
         return $this->view->setContent($content)->render("swimlane");
     }
 
     public function login() {
-
         if(isset($_POST)
             && is_array($_POST)
             && ! empty($_POST['uzyszkodnik'])
@@ -219,7 +231,7 @@ class Controller {
             $password = $_POST['password'];
 
             // create database object
-            $pdo = new PDO('mysql:host=localhost;dbname=test', 'root');
+            $pdo = new PDO($_SERVER['DB_DSN'], $_SERVER['DB_USER']);
 
             // prepare sql statement
             $sql = sprintf('SELECT * FROM users WHERE username="%s" AND password="%s" LIMIT 1 ',
@@ -236,7 +248,7 @@ class Controller {
                 $_SESSION['zalogowany'] = 1;
 
 
-                header('Location: http://localhost/');
+                header('Location: http://localhost/',true,302);
                 exit;
 
             } else {
@@ -259,27 +271,47 @@ class Controller {
 
     }
 
-    public function newUser() {
+    public function newuser() {
         if (isset ($_POST)
             && array_key_exists('form_name',$_POST)
             && $_POST['form_name']==='new_user')
-
         {
+            if(array_key_exists('password', $_POST)
+                && array_key_exists('original', $_POST['password'])
+                && strlen($_POST['password']['original'])>3
+                && array_key_exists('confirm', $_POST['password'])
+                && $_POST['password']['confirm'] === $_POST['password']['original']
+                && array_key_exists('name', $_POST)
+                && strlen($_POST['name'])>2
+            ){
+                // Form seems to be valid
 
-            $name = $_POST['name'];
-            $pass = $_POST['password'];
+                $name = $_POST['name'];
+                $pass = $_POST['password']['original'];
 
-            // create database object
-            $pdo = new PDO('mysql:host=localhost;dbname=test', 'root');
+                // create database object
+                $pdo = new PDO('mysql:host=localhost;dbname=test', 'root');
 
-            // prepare sql statement
-            $sql = sprintf('INSERT INTO users (id, username, password, status) VALUES (NULL, "%s" , "%s", 1)',
-                $name,
-                $pass
-            );
-            $pdo->query($sql);
+                // prepare sql statement
+                $sql = sprintf('INSERT INTO users (id, username, password, status) VALUES (NULL, "%s" , "%s", 1)',
+                    $name,
+                    $pass
+                );
+                $pdo->query($sql);
+
+                $_SESSION['messages'][]="Account Created";
+                header('Location: http://localhost/dashboard/?page=login',true,302);
+                exit;
+            }
+
 
         }
+        $content['page_title'] = "Create Account";
+        $content['form_name'] = "new_user";
+
+
+        return $this->view->setContent($content)->render("form-new_user");
+
     }
 
 }

@@ -1,10 +1,14 @@
 {
-  "swimlane":{
-    "controller": "Controller",
-    "models": {
-      "SwimlaneModel": {
-        "phpClass": "SwimlaneModel"
-      }
-    }
+  "homepage":{
+    "controller": "HomepageController",
+    "action": "homepage"
+  },
+  "login":{
+    "controller": "AuthController",
+    "action": "login"
+  },
+  "logout":{
+    "controller": "AuthController",
+    "action": "logout"
   }
 }
