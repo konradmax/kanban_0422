@@ -1,0 +1,22 @@
+{
+  "routes": {
+    "homepage":{
+      "controller": "Max\\Dashboard\\Controller\\HomepageController",
+      "restricted": false
+    },
+    "login":{
+      "controller": "AuthController",
+      "action": "login",
+      "restricted": false
+    },
+    "logout":{
+      "controller": "AuthController",
+      "action": "logout",
+      "restricted": false
+    },
+    "swimlanes":{
+      "controller": "SwimlanesController",
+      "restricted": true
+    }
+  }
+}
