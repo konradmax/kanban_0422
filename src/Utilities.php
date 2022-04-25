@@ -16,7 +16,7 @@ class Utilities {
         return false;
     }
 
-    static public function redirect($location)
+    static public function redirect($location=null)
     {
         header("Location: " . $_SERVER['WEB_ADDR'] . $location,true );
         exit;

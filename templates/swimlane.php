@@ -2,11 +2,14 @@
 <div class="container-fluid pt-3">
     <h3 class="font-weight-light text-white">Kanban Board</h3>
     <?php include('messages.php');?>
-
-    <form method="POST" name="new_task" action="?page=swimlanes&action=newTask">
-        <input type="hidden" name="form_name" value="" />
-        <input class="w-100 btn btn-lg btn-primary" value="New Task" type="submit"/>
-    </form>
+    <div class="row flex-row py-3">
+        <div class="col-3">
+            <form method="POST" name="new_task" action="?page=swimlanes&action=newTask">
+                <input type="hidden" name="form_name" value="" />
+                <input class="btn btn-primary" value="New Task" type="submit"/>
+            </form>
+        </div>
+    </div>
 
     <form method="POST" action="?page=swimlanes&action=update">
         <input type="hidden" name="form_name" value="swimlane_update" />

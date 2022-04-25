@@ -2,8 +2,10 @@
 
 namespace Max\Dashboard\Controller;
 
+use Max\Dashboard\Auth\Service\AuthService;
 use Max\Dashboard\ProductDataStore;
 use Max\Dashboard\SwimlaneModel;
+use Max\Dashboard\Task\Model\TaskModel;
 use Max\Dashboard\Utilities;
 use Max\Dashboard\View;
 use \PDO;
@@ -12,11 +14,15 @@ class SwimlanesController {
 
     protected $view;
     protected $utilities;
+    protected $taskModel;
+    protected $authService;
 
     public function __construct()
     {
         $this->view = new View();
         $this->utilities = new Utilities();
+        $this->taskModel = new TaskModel();
+        $this->authService = new AuthService();
     }
 
     public function index()
@@ -29,24 +35,17 @@ class SwimlanesController {
 
                 if(isset($_POST["zadanie"])) {
                     foreach($_POST["zadanie"] as $zadanieId=>$statusId){
+
                         $zadanieId=filter_var($zadanieId,FILTER_SANITIZE_NUMBER_INT);
                         $statusId=filter_var($statusId,FILTER_SANITIZE_NUMBER_INT);
-                        $sql = sprintf('SELECT * FROM tasks WHERE id=%d AND status=%d LIMIT 1 ',
-                            $zadanieId,
-                            $statusId
-                        );
-                        //var_dump($sql); die();
 
-                        $pdo = new PDO('mysql:host=localhost;dbname=test', 'root');
+                        $currentUser=$this->authService->getCurrentUserData();
 
-                        $count = $pdo->query($sql)->rowCount();
-                        if($count==0) {
-                            $sql = sprintf('UPDATE tasks SET status = %d WHERE tasks.id = %d;',
-                                $statusId,
-                                $zadanieId
-                            );
-                            $pdo->query($sql);
+                        $tasks = $this->taskModel->read(['id'=>$zadanieId,'status'=>$statusId]);
 
+                        if( ! empty($tasks)) {
+
+                            $isUpdated = $this->taskModel->update(['status'=>$statusId],$zadanieId);
 
                         }
                     }

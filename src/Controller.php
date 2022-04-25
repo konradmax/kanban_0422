@@ -4,20 +4,31 @@ namespace Max\Dashboard;
 
 use Max\Dashboard\ProductDataStore;
 use Max\Dashboard\SwimlaneModel;
+use Max\Dashboard\Utilities;
 use Max\Dashboard\View;
+use Max\Dashboard\User\Model\UserModel;
 use \PDO;
-require_once 'templates/form-new_task.php';
+use Max\Dashboard\Auth\Service\AuthService;
+
+//require_once 'templates/form-new_task.php';
+
+
 class Controller {
 
     /**
      * @var View
      */
     protected $view;
+    protected $userModel;
+    protected $authService;
 
     /**
      * @var ProductDataStore
      */
     protected $data_store;
+    protected $utilities;
+
+
 
     /**
      * @var string
@@ -27,6 +38,9 @@ class Controller {
     public function __construct()
     {
         $this->view = new View();
+        $this->userModel = new UserModel();
+        $this->utilities = new Utilities();
+        $this->authService = new AuthService();
     }
 
     public function products()
@@ -169,32 +183,18 @@ class Controller {
             && ! empty($_POST['password'])
             && strlen($_POST['password']) > 3
             && array_key_exists('form_name',$_POST)
-            && $_POST['form_name']==='login') {
+            && $_POST['form_name']==='login')
+        {
             // user submitted login form
-            $username1 = $_POST['uzyszkodnik'];
-            $password = $_POST['password'];
+            $username = filter_var($_POST['uzyszkodnik'],FILTER_SANITIZE_STRING);
+            $password = filter_var($_POST['password'],FILTER_SANITIZE_STRING);
 
-            // create database object
-            $pdo = new PDO($_SERVER['DB_DSN'], $_SERVER['DB_USER']);
+            $isAuthValid=$this->authService->authenticate($username,$password);
 
-            // prepare sql statement
-            $sql = sprintf('SELECT * FROM users WHERE username="%s" AND password="%s" LIMIT 1 ',
-                $username1,
-                $password
-            );
-
-            $currentUserData = $pdo->query($sql)->fetch();
-            // check if there are any rows
-            if(is_array($currentUserData)&&count($currentUserData)) {
-                // username and password are OK. Carry on.
-                $_SESSION['user_id'] = $currentUserData['id'];
-                $_SESSION['zalogowany'] = 1;
-
-                header('Location: http://localhost/',true,302);
-                exit;
-            } else {
-                // username or password incorrect
-
+            if($isAuthValid) {
+                $this->authService->login($isAuthValid['id'],$isAuthValid['username'],);
+                $this->utilities->addMessage("Zalogowano pomyslnie.");
+                Utilities::redirect();
             }
 
         }
