@@ -1,0 +1,13 @@
+{
+    "require": {
+        "robmorgan/phinx": "^0.12.10",
+        "laminas/laminas-config": "^3.7",
+        "laminas/laminas-json": "^3.3"
+    },
+    "require-dev": {
+        "symfony/dotenv": "^6.0"
+    },
+    "autoload": {
+        "psr-4": {"Max\\Dashboard\\": "src/"}
+    }
+}

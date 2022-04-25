@@ -6,7 +6,7 @@ use Max\Dashboard\ProductDataStore;
 use Max\Dashboard\SwimlaneModel;
 use Max\Dashboard\View;
 use \PDO;
-
+require_once 'templates/form-new_task.php';
 class Controller {
 
     /**
@@ -185,16 +185,13 @@ class Controller {
 
             $currentUserData = $pdo->query($sql)->fetch();
             // check if there are any rows
-            if(count($currentUserData)) {
+            if(is_array($currentUserData)&&count($currentUserData)) {
                 // username and password are OK. Carry on.
-
                 $_SESSION['user_id'] = $currentUserData['id'];
                 $_SESSION['zalogowany'] = 1;
 
-
                 header('Location: http://localhost/',true,302);
                 exit;
-
             } else {
                 // username or password incorrect
 
@@ -257,6 +254,8 @@ class Controller {
         return $this->view->setContent($content)->render("form-new_user");
 
     }
+
+
 
 }
 

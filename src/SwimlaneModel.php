@@ -41,8 +41,7 @@ class SwimlaneModel
                 $kommentarze = $this->getCommentsByTaskId($pojedynczeZadanie->id);
                 $listaZadan[$index] = $pojedynczeZadanie->attachComments($kommentarze);
 
-
-//            $listaZadan[$index]['komentarze'] = getCommentsByTaskId($pojedynczeZadanie['id']);
+                $listaZadan[$index]->comments =$this->getCommentsByTaskId($pojedynczeZadanie->id);
             }
         }
 

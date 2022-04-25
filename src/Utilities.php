@@ -16,6 +16,12 @@ class Utilities {
         return false;
     }
 
+    static public function redirect($location)
+    {
+        header("Location: " . $_SERVER['WEB_ADDR'] . $location,true );
+        exit;
+    }
+
     public function getMessages()
     {
         return $this->messages;

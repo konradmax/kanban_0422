@@ -41,7 +41,11 @@ class Application {
             }
 
             $controller = new $this->config['routes'][$pageGet]['controller'];
-            $content['content'] = $controller->$actionGet();
+            if(method_exists($controller,$actionGet)) {
+                $content['content'] = $controller->$actionGet();
+            } else {
+                $content['content'] = $controller->index();
+            }
         } else {
             // page will use standard Controller
             $controller = new Controller();

@@ -21,12 +21,11 @@ class SwimlanesController {
 
     public function index()
     {
-        if(isset($_GET['action'])
+        if( isset($_GET['action'])
             && $_GET['action']=='update') {
             // form has been submitted
             if(isset($_POST['form_name'])&&$_POST['form_name']==="swimlane_update") {
                 // user sent swimlane form
-                // echo "<pre>"; var_dump($_POST);die();
 
                 if(isset($_POST["zadanie"])) {
                     foreach($_POST["zadanie"] as $zadanieId=>$statusId){
@@ -69,6 +68,28 @@ class SwimlanesController {
         $this->utilities->unsetMessages();
 
         return $this->view->setContent($content)->render("swimlane");
+    }
+
+    public function newTask() {
+        // create database object
+        $pdo = new PDO($_SERVER['DB_DSN'], $_SERVER['DB_USER']);
+
+        // prepare sql statement
+        $sql = sprintf('INSERT INTO tasks (`id`, `title`, `description`, `user_id`, `status`) VALUES (NULL, "title", "description", %d, 1 );',
+            $_SESSION['user_id']
+        );
+
+        $pdo->query($sql);
+
+        if (isset ($_POST['new_task'])){
+            $this->newTask();
+        }
+        $content['page_title'] = "Kanban";
+        $content['form_name'] = "new_task";
+
+        Utilities::redirect("?page=swimlanes");
+
+//        return $this->view->setContent($content)->render("swimlane");
     }
 
 }
