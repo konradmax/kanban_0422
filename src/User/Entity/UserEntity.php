@@ -27,7 +27,7 @@ class UserEntity extends BasicEntity
         $this->status = $data['status'];
     }
 
-    public function attachComments(array $comments) {
+    public function attachComments(array $comments = []) {
         $this->comments = $comments;
 
         return $this;

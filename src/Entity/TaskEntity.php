@@ -13,7 +13,7 @@ class TaskEntity extends BasicEntity
 
     public string $description;
 
-    public array $comments = [];
+    public $comments = [];
 
     public function __construct(array $data)
     {
@@ -25,7 +25,7 @@ class TaskEntity extends BasicEntity
         $this->status = $data['status'];
     }
 
-    public function attachComments(array $comments) {
+    public function attachComments( $comments = []) {
         $this->comments = $comments;
 
         return $this;

@@ -5,7 +5,7 @@
       "restricted": false
     },
     "swimlanes":{
-      "controller": "Max\\Dashboard\\Controller\\SwimlanesController",
+      "controller": "Max\\Dashboard\\Controller\\TasksController",
       "restricted": true
     }
   }

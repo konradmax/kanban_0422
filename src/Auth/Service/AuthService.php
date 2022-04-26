@@ -24,14 +24,6 @@ class AuthService
         return ($result);
     }
 
-    public function getCurrentUserData()
-    {
-        return [
-            'id' => $_SESSION['user_id'],
-            'username'=>$_SESSION['username']
-        ];
-    }
-
     /**
      * Login User
      *
@@ -45,5 +37,17 @@ class AuthService
         $_SESSION['zalogowany'] = 1;
 
         return true;
+    }
+
+    public function getCurrentUserData()
+    {
+        return [
+            'id' => $_SESSION['user_id'],
+            'username'=>$_SESSION['username']
+        ];
+    }
+
+    public function getCurrentUserId(){
+        return $_SESSION['user_id'];
     }
 }

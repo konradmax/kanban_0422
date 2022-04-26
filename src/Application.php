@@ -22,7 +22,6 @@ class Application {
     public function dispatch() : string
     {
         $auth = new Authenticate();
-//        var_dump($auth->isAuthenticated());die();
         $view = new View();
 
         $pageGet = !empty($_GET['page']) ? filter_var($_GET['page'], FILTER_SANITIZE_STRING) : "homepage";
@@ -39,7 +38,7 @@ class Application {
                     exit;
                 }
             }
-
+var_dump($actionGet);
             $controller = new $this->config['routes'][$pageGet]['controller'];
             if(method_exists($controller,$actionGet)) {
                 $content['content'] = $controller->$actionGet();

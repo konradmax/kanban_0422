@@ -3,7 +3,7 @@
 namespace Max\Dashboard\Controller;
 
 use Max\Dashboard\ProductDataStore;
-use Max\Dashboard\SwimlaneModel;
+use Max\Dashboard\TaskModel;
 use Max\Dashboard\View;
 use \PDO;
 

@@ -4,13 +4,13 @@ namespace Max\Dashboard\Controller;
 
 use Max\Dashboard\Auth\Service\AuthService;
 use Max\Dashboard\ProductDataStore;
-use Max\Dashboard\SwimlaneModel;
 use Max\Dashboard\Task\Model\TaskModel;
 use Max\Dashboard\Utilities;
 use Max\Dashboard\View;
 use \PDO;
 
-class SwimlanesController {
+class TasksController
+{
 
     protected $view;
     protected $utilities;
@@ -27,6 +27,19 @@ class SwimlanesController {
 
     public function index()
     {
+        $currentUserId = $this->authService->getCurrentUserId();
+        $swimlanes = $this->taskModel->getTasksByUser($currentUserId);
+
+        $content['page_title'] = "updateSwimlane!";
+        $content['tasks'] = $this->taskModel->getTasksByUserGroupByStatus($currentUserId);
+        // check for messages
+        $content['messages'] = $this->utilities->getMessages();
+        $this->utilities->unsetMessages();
+
+        return $this->view->setContent($content)->render("swimlane");
+    }
+
+    public function update() {
         if( isset($_GET['action'])
             && $_GET['action']=='update') {
             // form has been submitted
@@ -55,41 +68,38 @@ class SwimlanesController {
 
         }
 
-        $swimlaneModel = new SwimlaneModel();
-
-        $swimlanes = $swimlaneModel->getTasksByUserAndStatus(1,1);
-
-        $content['page_title'] = "updateSwimlane!";
-        $content['swimlanes'] = $swimlanes;
-        $content['swimlaneModel'] = $swimlaneModel;
-
-        // check for messages
-        $content['messages'] = $this->utilities->getMessages();
-        $this->utilities->unsetMessages();
-
-        return $this->view->setContent($content)->render("swimlane");
+        return $this->index();
     }
 
-    public function newTask() {
-        // create database object
-        $pdo = new PDO($_SERVER['DB_DSN'], $_SERVER['DB_USER']);
+    public function create() {
+        if (isset ($_POST['form_name'])){
 
-        // prepare sql statement
-        $sql = sprintf('INSERT INTO tasks (`id`, `title`, `description`, `user_id`, `status`) VALUES (NULL, "title", "description", %d, 1 );',
-            $_SESSION['user_id']
-        );
 
-        $pdo->query($sql);
+            $data = [
+                "title"=>Utilities::generateRandomString(8),
+                "description"=>Utilities::generateRandomString(50),
+                "user_id"=>$this->authService->getCurrentUserId(),
+                "status"=>1,
+                ];
 
-        if (isset ($_POST['new_task'])){
-            $this->newTask();
+            $this->taskModel->create($data);
+
+//
+//            // create database object
+//            $pdo = new PDO($_SERVER['DB_DSN'], $_SERVER['DB_USER']);
+//
+//            // prepare sql statement
+//            $sql = sprintf('INSERT INTO tasks (`id`, `title`, `description`, `user_id`, `status`) VALUES (NULL, "title", "description", %d, 1 );',
+//                $_SESSION['user_id']
+//            );
+//
+//            $pdo->query($sql);
+//
+//            $content['page_title'] = "Kanban";
+//            $content['form_name'] = "new_task";
         }
-        $content['page_title'] = "Kanban";
-        $content['form_name'] = "new_task";
 
         Utilities::redirect("?page=swimlanes");
-
-//        return $this->view->setContent($content)->render("swimlane");
     }
 
 }

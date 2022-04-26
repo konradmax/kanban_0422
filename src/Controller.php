@@ -3,7 +3,7 @@
 namespace Max\Dashboard;
 
 use Max\Dashboard\ProductDataStore;
-use Max\Dashboard\SwimlaneModel;
+use Max\Dashboard\TaskModel;
 use Max\Dashboard\Utilities;
 use Max\Dashboard\View;
 use Max\Dashboard\User\Model\UserModel;

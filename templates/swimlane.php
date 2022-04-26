@@ -4,13 +4,12 @@
     <?php include('messages.php');?>
     <div class="row flex-row py-3">
         <div class="col-3">
-            <form method="POST" name="new_task" action="?page=swimlanes&action=newTask">
-                <input type="hidden" name="form_name" value="" />
+            <form method="POST" name="new_task" action="?page=swimlanes&action=create">
+                <input type="hidden" name="form_name" value="new_task" />
                 <input class="btn btn-primary" value="New Task" type="submit"/>
             </form>
         </div>
     </div>
-
     <form method="POST" action="?page=swimlanes&action=update">
         <input type="hidden" name="form_name" value="swimlane_update" />
         <input type="submit" name="" class="btn btn-primary" />
@@ -20,25 +19,15 @@
                 <div class="card-body">
                     <h6 class="card-title text-uppercase text-truncate py-2">To Do</h6>
                     <div class="items border border-light">
-
                         <?php
-                        $taskTodo = $content['swimlaneModel']->getTasksByUserAndStatusWithComments($_SESSION['user_id'],1);
-
-                        foreach($taskTodo as $zadanieTodo):
-                        include("templates/swimlane-item.php");
-
-?>
-
-                        <?php
-                        endforeach;
-
-                        if(count($content['swimlaneModel']->getTasksByUserAndStatus($_SESSION['user_id'],1))):
-                            ?>
-
-
-                        <?php endif;?>
+                        $tasksTodo = $content['tasks'][1];
+                        if( ! empty($tasksTodo)) {
+                            foreach($tasksTodo as $taskTodo):
+                                include("templates/swimlane-item.php");
+                            endforeach;
+                        }
+                        ?>
                         <div class="dropzone rounded" ondrop="drop(event);updateInputStatusDrop(this);iterateSwimlanes();" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
-
                     </div>
                 </div>
             </div>
@@ -48,19 +37,14 @@
                 <div class="card-body">
                     <h6 class="card-title text-uppercase text-truncate py-2">In-progess</h6>
                     <div class="items border border-light">
-
-                                              <?php
-                        $taskTodo = $content['swimlaneModel']->getTasksByUserAndStatus($_SESSION['user_id'],2);
-foreach($taskTodo as $zadanieTodo):
-
-include("templates/swimlane-item.php");
-
-?>
-
                         <?php
-endforeach;
-?>
-
+                        $tasksTodo = $content['tasks'][2];
+                        if( ! empty($tasksTodo)) {
+                            foreach($tasksTodo as $taskTodo):
+                                include("templates/swimlane-item.php");
+                            endforeach;
+                        }
+                        ?>
                         <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
                     </div>
                 </div>
@@ -73,18 +57,13 @@ endforeach;
                     <h6 class="card-title text-uppercase text-truncate py-2">Review</h6>
                     <div class="items border border-light">
                         <?php
-                        $taskTodo = $content['swimlaneModel']->getTasksByUserAndStatus($_SESSION['user_id'],3);
-                        foreach($taskTodo as $zadanieTodo):
-
-                            include("templates/swimlane-item.php");
-
-                            ?>
-
-                        <?php
-                        endforeach;
+                        $tasksTodo = $content['tasks'][3];
+                        if( ! empty($tasksTodo)) {
+                            foreach($tasksTodo as $taskTodo):
+                                include("templates/swimlane-item.php");
+                            endforeach;
+                        }
                         ?>
-
-
                         <div class="dropzone rounded" ondrop="drop(event);updateInputStatusDrop(this)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
                     </div>
                 </div>
@@ -95,21 +74,14 @@ endforeach;
                 <div class="card-body">
                     <h6 class="card-title text-uppercase text-truncate py-2">Complete</h6>
                     <div class="items border border-light">
-
-
                         <?php
-                        $taskTodo = $content['swimlaneModel']->getTasksByUserAndStatus($_SESSION['user_id'],4);
-                        foreach($taskTodo as $index=>$zadanieTodo):
-
-                            include("templates/swimlane-item.php");
-
-                            ?>
-
-                        <?php
-                        endforeach;
+                        $tasksTodo = $content['tasks'][4];
+                        if( ! empty($tasksTodo)) {
+                            foreach($tasksTodo as $taskTodo):
+                                include("templates/swimlane-item.php");
+                            endforeach;
+                        }
                         ?>
-
-
                         <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
                     </div>
                 </div>

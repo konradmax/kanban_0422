@@ -2,39 +2,40 @@
 
 namespace Max\Dashboard;
 
+use Max\Dashboard\Common\Model\CommonModel;
 use Max\Dashboard\Entity\TaskEntity;
 use \PDO;
 
-class SwimlaneModel
+class TaskModel
 {
 
-    function getTasksByUserAndStatus($user_id,$status) {
+    function getTasksByUser($user_id,$status) {
 
-    $pdo = new PDO($_SERVER['DB_DSN'], $_SERVER['DB_USER']);
+        $pdo = new PDO($_SERVER['DB_DSN'], $_SERVER['DB_USER']);
 
-    // prepare sql statement
-    $sql = sprintf('SELECT * FROM tasks WHERE user_id=%d AND status=%d',
-        $user_id,
-        $status
-    );
-    $sth = $pdo->prepare($sql);
-    $sth->execute();
+        // prepare sql statement
+        $sql = sprintf('SELECT * FROM tasks WHERE user_id=%d AND status=%d',
+            $user_id,
+            $status
+        );
+        $sth = $pdo->prepare($sql);
+        $sth->execute();
 
-    $result = $sth->fetchAll();
+        $result = $sth->fetchAll();
 
-    $output = [];
+        $output = [];
 
-    foreach($result as $item) {
-        $output[] = new TaskEntity($item);
+        foreach($result as $item) {
+            $output[] = new TaskEntity($item);
+        }
+
+        return $output;
     }
 
-    return $output;
-}
-
-    function getTasksByUserAndStatusWithComments($user_id,$status)
+    function getTasksByUserWithComments($user_id,$status)
     {
         // dla kazdego zadania pobierz komentarze
-        $listaZadan = $this->getTasksByUserAndStatus($user_id,$status);
+        $listaZadan = $this->getTasksByUser($user_id,$status);
         if(count($listaZadan)>0) {
             foreach($listaZadan as $index=>$pojedynczeZadanie) {
 

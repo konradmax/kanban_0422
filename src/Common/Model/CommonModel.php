@@ -16,12 +16,40 @@ class CommonModel
         $this->database = new PDO($_SERVER['DB_DSN'], $_SERVER['DB_USER']);;
     }
 
-    public function create($data){
+    public function create($data)
+    {
+        $sql = sprintf("INSERT INTO %s ",$this->table_name);
+        $sqlColumns = implode(', ',array_keys($data));
+        $sql .= sprintf(" (%s)",$sqlColumns);
 
+        $sqlValuesQuoted = array_map(function($val) {
+            if( ! is_null($val)) {
+                return '"'.$val.'"';
+            }
+            return $val;
+            }, $data);
+        $sqlValues = implode(', ',$sqlValuesQuoted);
+
+        $sql .= sprintf(" VALUES (%s)",$sqlValues);
+
+        return $this->database->query($sql);
     }
 
-    public function read($where=[])
+    public function read($where=[],int $limit=0)
     {
+        $sql = $this->readSQL($where,$limit);
+
+        return $this->database->query($sql)->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function readAll($where=[],int $limit=0)
+    {
+        $sql = $this->readSQL($where,$limit);
+
+        return $this->database->query($sql)->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    private function readSQL($where=[],int $limit=0) {
         $sql = sprintf("SELECT * FROM %s",$this->table_name);
 
         if( ! empty($where)) {
@@ -35,10 +63,23 @@ class CommonModel
                 }
                 $i++;
             }
+
+            if($limit>0) {
+                $sql .= sprintf(" LIMIT %d",$limit);
+            }
+
         }
 
-        return $this->database->query($sql)->fetch();
+        return $sql;
     }
+
+    public function readOne($where=[],int $limit=0)
+    {
+        $result = $this->read($where,$limit);
+
+        return $result[0];
+    }
+
 
     public function updateById($id,$data){
         $sql = "UPDATE tasks SET ";
