@@ -39,7 +39,23 @@ class CommonModel
 
         return $this->database->query($sql)->fetch();
     }
-    public function update($id,$data){
+
+    public function updateById($id,$data){
+        $sql = "UPDATE tasks SET ";
+        $countColumns = count($data);
+        $i = 1;
+
+        foreach($data as $columnName=>$columnValue) {
+            $sql .= sprintf(" %s='%s'",$columnName,$columnValue);
+            if($i!==$countColumns) {
+                $sql .= ", ";
+            }
+            $i++;
+        }
+
+        $sql .= " WHERE id=" . $id;
+
+        return $this->database->query($sql);
 
     }
     public function delete($id){

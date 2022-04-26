@@ -41,11 +41,12 @@ class SwimlanesController {
 
                         $currentUser=$this->authService->getCurrentUserData();
 
+                        // check if tasks status has changed
                         $tasks = $this->taskModel->read(['id'=>$zadanieId,'status'=>$statusId]);
 
-                        if( ! empty($tasks)) {
+                        if(empty($tasks)) {
 
-                            $isUpdated = $this->taskModel->update(['status'=>$statusId],$zadanieId);
+                            $isUpdated = $this->taskModel->updateTaskStatus($zadanieId,$statusId);
 
                         }
                     }
@@ -61,8 +62,8 @@ class SwimlanesController {
         $content['page_title'] = "updateSwimlane!";
         $content['swimlanes'] = $swimlanes;
         $content['swimlaneModel'] = $swimlaneModel;
-        // check for messages
 
+        // check for messages
         $content['messages'] = $this->utilities->getMessages();
         $this->utilities->unsetMessages();
 
